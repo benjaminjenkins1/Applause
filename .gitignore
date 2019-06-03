@@ -7,4 +7,5 @@ instance/
 htmlcov/
 dist/
 build/
+migrations/
 *.egg-info/
