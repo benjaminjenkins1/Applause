@@ -26,7 +26,13 @@ def create_app(test_config=None):
   except OSError:
     pass
 
-  from clapper.model import User
+  from clapper.model import (
+    User,
+    Domain,
+    Key,
+    Page,
+    Clap
+  )
 
   # Route that just says 'Hello!'
   @app.route('/hello')
