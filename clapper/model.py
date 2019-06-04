@@ -5,7 +5,9 @@ class User(db.Model):
   __tablename__ = 'users'
 
   email = db.Column(db.String(), primary_key=True)
-  pass_hash = db.Column(db.String())
+  pass_hash = db.Column(db.String(), nullable=False)
+  activated = db.Column(db.Boolean(), default=False, nullable=False)
+  banned = db.Column(db.Boolean, default=False, nullable=False)
 
   domains = db.relationship('Domain', backref='user', lazy=True)
   keys = db.relationship('Key', backref='user', lazy=True)
@@ -21,8 +23,8 @@ class Domain(db.Model):
   )
 
   did = db.Column(db.Integer, primary_key=True)
-  domain_name = db.Column(db.String())
-  email = db.Column(db.String(), db.ForeignKey('users.email'))
+  domain_name = db.Column(db.String(), nullable=False)
+  email = db.Column(db.String(), db.ForeignKey('users.email'), nullable=False)
 
   pages = db.relationship('Page', backref='domain', lazy=True)
 
@@ -34,8 +36,8 @@ class Key(db.Model):
   __tablename__ = 'keys'
 
   uuid = db.Column(db.String(), primary_key=True)
-  did = db.Column(db.Integer, db.ForeignKey('domains.did'))
-  email = db.Column(db.String(), db.ForeignKey('users.email'))
+  did = db.Column(db.Integer, db.ForeignKey('domains.did'), nullable=False)
+  email = db.Column(db.String(), db.ForeignKey('users.email'), nullable=False)
 
   def __repr__(self):
     return '<uuid {}>'.format(self.uuid)
@@ -48,9 +50,9 @@ class Page(db.Model):
   )
 
   pid = db.Column(db.Integer, primary_key=True)
-  did = db.Column(db.Integer, db.ForeignKey('domains.did'))
-  path = db.Column(db.String())
-  total_claps = db.Column(db.Integer, default=0)
+  did = db.Column(db.Integer, db.ForeignKey('domains.did'), nullable=False)
+  path = db.Column(db.String(), nullable=False)
+  total_claps = db.Column(db.Integer, default=0, nullable=False)
 
   claps = db.relationship('Clap', backref='page', lazy=True)
 
@@ -63,7 +65,7 @@ class Clap(db.Model):
   
   pid = db.Column(db.Integer, db.ForeignKey('pages.pid'), primary_key=True)
   ip = db.Column(db.String(), primary_key=True)
-  num_claps = db.Column(db.Integer)
+  num_claps = db.Column(db.Integer, default=0, nullable=False)
 
   def __repr__(self):
     return '<pid {} ip {}>'.format(self.pid, self.ip)
