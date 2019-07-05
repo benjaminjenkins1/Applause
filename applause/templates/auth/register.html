@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block header %}
+  Register
+{% endblock %}
+
+{% block content %}
+  {% from "_formhelpers.html" import render_field %}
+  <form method="post">
+    <dl>
+      {{ render_field(form.email) }}
+      {{ render_field(form.password) }}
+      {{ render_field(form.confirm_password) }}
+      {{ render_field(form.recaptcha) }}
+      {{ form.hidden_tag() }}
+    </dl>
+    <p><input type="submit" value="Create Your Account">
+  </form>
+{% endblock %}

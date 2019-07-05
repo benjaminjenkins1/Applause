@@ -1,6 +1,9 @@
 import os
 
-from flask import Flask
+from flask import (
+  Flask,
+  render_template
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -8,6 +11,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app(test_config=None):
+
   # Create and configure the app
   app = Flask(__name__, instance_relative_config=True)
   app.config.from_mapping(
@@ -26,23 +30,19 @@ def create_app(test_config=None):
   except OSError:
     pass
 
-  from clapper.model import (
-    User,
-    Domain,
-    Key,
-    Page,
-    Clap
-  )
-
   # Route that just says 'Hello!'
-  @app.route('/hello')
-  def hello():
-    return 'Hello!'
+  @app.route('/')
+  def index():
+    return render_template('index.html')
 
   db.init_app(app)
   migrate.init_app(app, db)
 
-  from . import auth
-  app.register_blueprint(auth.bp)
+  with app.app_context():
+    from . import auth
+    app.register_blueprint(auth.bp)
 
-  return app
+    from . import dashboard
+    app.register_blueprint(dashboard.bp)
+
+    return app

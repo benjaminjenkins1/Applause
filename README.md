@@ -1,4 +1,4 @@
-# Clapper
+# Applause
 Claps from Medium, everywhere
 
 ## Database initialization, migration, and upgrade

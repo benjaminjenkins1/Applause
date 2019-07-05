@@ -1,4 +1,4 @@
-from clapper import db
+from applause import db
 
 
 class User(db.Model):
