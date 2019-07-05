@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block header %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+  <section id="domains">
+    <h2>My Domains</h2>
+    <ul>
+    {% for domain in domains %}
+      <li>{{ domain.domain_name }} [{% if domain.validated %}validated{% else %}not validated{% endif %}]</li>
+    {% endfor %}
+    </ul>
+    <a href="{{ url_for('dashboard.add_domain') }}">+</a>
+  </section>
+{% endblock %}

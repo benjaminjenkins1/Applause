@@ -2,7 +2,10 @@ import os
 
 from flask import (
   Flask,
-  render_template
+  render_template,
+  g,
+  redirect,
+  url_for
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -33,6 +36,8 @@ def create_app(test_config=None):
   # Route that just says 'Hello!'
   @app.route('/')
   def index():
+    if g.user is not None:
+      return redirect(url_for('dashboard.dashboard'))
     return render_template('index.html')
 
   db.init_app(app)

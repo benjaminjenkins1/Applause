@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Dashboard
+Domain Detail
 {% endblock %}
 
 {% block header %}
-  Dashboard
+  {{ domain.domain_name }}
 {% endblock %}
 
 {% block content %}
-  <h1></h1>
+  {% if domain.validated %}
 {% endblock %}

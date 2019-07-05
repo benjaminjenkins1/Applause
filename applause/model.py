@@ -25,6 +25,7 @@ class Domain(db.Model):
   did = db.Column(db.Integer, primary_key=True)
   domain_name = db.Column(db.String(), nullable=False)
   email = db.Column(db.String(), db.ForeignKey('users.email'), nullable=False)
+  validated = db.Column(db.Boolean, default=False, nullable=False)
 
   pages = db.relationship('Page', backref='domain', lazy=True)
 

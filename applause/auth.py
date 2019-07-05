@@ -18,10 +18,13 @@ from werkzeug.security import (
 from applause import db
 
 from applause.model import User
+
 from applause.forms import (
   RegisterForm,
   LoginForm
 )
+
+import functools
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -62,7 +65,7 @@ def register():
       db.session.commit()
       session.clear()
       session['email'] = email
-      return redirect(url_for('dashboard'))
+      return redirect(url_for('dashboard.dashboard'))
     else:
       msg = Markup('There\'s already an account with that email address<br><a href="/auth/login">Log in</a><br><a href="/auth/reset_password">Reset password</a>')
       flash(msg)
