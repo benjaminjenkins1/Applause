@@ -28,6 +28,7 @@ class Domain(db.Model):
   validated = db.Column(db.Boolean, default=False, nullable=False)
 
   pages = db.relationship('Page', backref='domain', lazy=True)
+  keys = db.relationship('Key', backref='domain', lazy=True)
 
   def __repr__(self):
     return '<did {}>'.format(self.did)

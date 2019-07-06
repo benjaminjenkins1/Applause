@@ -13,7 +13,10 @@ from applause import db
 
 from applause.auth import login_required
 
-from applause.model import Domain
+from applause.model import (
+  Domain,
+  Key
+)
 
 from applause.forms import (
   AddDomainForm
@@ -52,5 +55,6 @@ def domain_detail():
   domain_name = request.args.get('domain')
   domain = Domain.query.filter_by(email=g.user.email, domain_name=domain_name).first()
   if domain is None:
-    return return redirect(url_for('dashboard.dashboard'))
-  return render_template('dashboard/domain_detail.html', domain=domain)
+    return redirect(url_for('dashboard.dashboard'))
+  keys = Domain.query.filter_by(domain_name=domain.domain_name, email=g.user.email).join(Domain.keys).all()
+  return render_template('dashboard/domain_detail.html', domain=domain, keys=keys)

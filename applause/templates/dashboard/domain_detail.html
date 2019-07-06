@@ -10,4 +10,17 @@ Domain Detail
 
 {% block content %}
   {% if domain.validated %}
+    <p class="domain-validated">Validated</p>
+  {% else %}
+    <p class="domain-not-validated">Not yet validated</p>
+  {% endif %}
+  <h2>Keys for this domain</h2>
+  <ul>
+    {% for key in keys %}
+      <li>
+        {{ key.uuid }}
+        <code>Code for this key goes here</code>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}
