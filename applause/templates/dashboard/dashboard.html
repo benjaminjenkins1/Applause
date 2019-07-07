@@ -13,9 +13,10 @@ Dashboard
     <h2>My Domains</h2>
     <ul>
     {% for domain in domains %}
-      <li><a href="{{ url_for('dashboard.domain_detail', domain=domain.domain_name) }}">{{ domain.domain_name }}</a> [{% if domain.validated %}validated{% else %}not validated{% endif %}]</li>
+      <li><a href="{{ url_for('dashboard.domain_detail', did=domain.did) }}">{{ domain.domain_name }}</a> [{% if domain.validated %}validated{% else %}not validated{% endif %}]</li>
     {% endfor %}
     </ul>
     <a href="{{ url_for('dashboard.add_domain') }}">+</a>
   </section>
 {% endblock %}
+

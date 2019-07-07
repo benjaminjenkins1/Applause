@@ -23,3 +23,8 @@ class LoginForm(FlaskForm):
 class AddDomainForm(FlaskForm):
   domain_name = StringField('Domain Name', validators=[DataRequired(message='You have to provide a domain name'), Regexp('^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$', message='This is not a valid domain name')])
 
+class AddKeyForm(FlaskForm):
+  did = StringField('Domain ID', validators=[DataRequired()])
+
+class DeleteKeyForm(FlaskForm):
+  uuid = StringField('UUID', validators=[DataRequired()])

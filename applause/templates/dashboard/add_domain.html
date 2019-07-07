@@ -10,7 +10,7 @@
 
 {% block content %}
   {% from "_formhelpers.html" import render_field %}
-  <form method="post">
+  <form method="post" action="/my/add_domain">
     <dl>
       {{ render_field(form.domain_name) }}
       {{ form.hidden_tag() }}

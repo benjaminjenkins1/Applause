@@ -14,13 +14,33 @@ Domain Detail
   {% else %}
     <p class="domain-not-validated">Not yet validated</p>
   {% endif %}
+  {% if keys != None %}
   <h2>Keys for this domain</h2>
   <ul>
     {% for key in keys %}
-      <li>
-        {{ key.uuid }}
-        <code>Code for this key goes here</code>
+      <li id="{{ key.uuid }}">
+        <p>{{ key.uuid }} <button onclick="toggleKeyDetails('{{ key.uuid }}')">more</button></p>
+        <code hidden>Code for this key goes here</code>
+        <form hidden method="post" action="/my/delete_key">
+          <dl>
+            <input type="hidden" name="uuid" value="{{ key.uuid }}">
+            {{ delete_key_form.hidden_tag() }}
+          </dl>
+          <p><input type="submit" value="Delete">
+        </form>
       </li>
     {% endfor %}
   </ul>
+  {% endif %}
+  <form method="post" action="/my/add_key">
+    <dl>
+      <input type="hidden" name="did" value="{{ domain.did }}">
+      {{ add_key_form.hidden_tag() }}
+    </dl>
+    <input type="submit" value="New Key">
+  </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/domain_detail.js"></script>
 {% endblock %}
