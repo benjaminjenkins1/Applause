@@ -24,6 +24,7 @@ Domain Detail
         <form hidden method="post" action="/my/delete_key">
           <dl>
             <input type="hidden" name="uuid" value="{{ key.uuid }}">
+            <input type="hidden" name="did" value="{{ domain.did }}">
             {{ delete_key_form.hidden_tag() }}
           </dl>
           <p><input type="submit" value="Delete">

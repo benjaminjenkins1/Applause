@@ -84,3 +84,18 @@ def add_key():
     return redirect(url_for('dashboard.domain_detail', did=did))
   flash('There was a problem adding a new key for this domain')
   return redirect(url_for('dashboard.dashboard'))
+
+@bp.route('/delete_key', methods=['POST'])
+@login_required
+def delete_key():
+  form = DeleteKeyForm()
+  if form.is_submitted() and form.validate_on_submit():
+    uuid = form.uuid.data
+    did = form.did.data
+    print(uuid)
+    # remove the key with this uuid and email of the user from the database
+    Key.query.filter(Key.uuid==uuid, Key.email==g.user.email).delete()
+    db.session.commit()
+    return redirect(url_for('dashboard.domain_detail', did=did))
+  flash('There was a problem removing the key for this domain')
+  return redirect(url_for('dashboard.dashboard'))

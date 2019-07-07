@@ -27,4 +27,5 @@ class AddKeyForm(FlaskForm):
   did = StringField('Domain ID', validators=[DataRequired()])
 
 class DeleteKeyForm(FlaskForm):
-  uuid = StringField('UUID', validators=[DataRequired()])
+  uuid = StringField('uuid', validators=[DataRequired()])
+  did = StringField('did', validators=[DataRequired()])
