@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField, Recaptcha
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
 from flask import current_app
 
@@ -29,3 +29,14 @@ class AddKeyForm(FlaskForm):
 class DeleteKeyForm(FlaskForm):
   uuid = StringField('uuid', validators=[DataRequired()])
   did = StringField('did', validators=[DataRequired()])
+
+class ClapForm(FlaskForm):
+  page = StringField('page', validators=[DataRequired()])
+
+class PageViewForm(FlaskForm):
+  page = StringField('page' validators=[DataRequired()])
+  referrer = StringField('referrer')
+
+class LeavePageForm(FlaskForm):
+  page = StringField('page', validators=[DataRequired()])
+  pvid = IntegerField('pvid', validators=[DataRequired()])

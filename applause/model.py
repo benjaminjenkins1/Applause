@@ -1,6 +1,5 @@
 from applause import db
 
-
 class User(db.Model):
   __tablename__ = 'users'
 
@@ -71,3 +70,13 @@ class Clap(db.Model):
 
   def __repr__(self):
     return '<pid {} ip {}>'.format(self.pid, self.ip)
+
+class PageView(db.Model):
+  __tablename__ = 'pageviews'
+
+  pvid = db.Column(db.Integer, primary_key=True)
+  pid = db.Column(db.Integer, db.ForeignKey('pages.pid'), nullable=False)
+  ip = db.Column(db.String(), nullable=False)
+  referrer = db.Column(db.String(), nullable=True)
+  start_time = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+  time_on_page = db.Column(db.Interval, nullable=True)

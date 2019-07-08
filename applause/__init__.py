@@ -50,4 +50,7 @@ def create_app(test_config=None):
     from . import dashboard
     app.register_blueprint(dashboard.bp)
 
+    from . import analytics
+    app.register_blueprint(analytics.bp)
+
     return app
