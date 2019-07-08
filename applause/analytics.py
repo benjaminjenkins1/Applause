@@ -7,11 +7,13 @@ from applause import db
 
 from applause.model import (
   Clap,
-  PageView
+  PageView,
+  Page
 )
 
 from applause.forms import (
-  ClapForm,
+  CreateClapForm,
+  UpdateClapForm,
   PageViewForm,
   LeavePageForm
 )
@@ -27,21 +29,82 @@ def get_remote_addr(request):
 
 @bp.route('/clap', methods=['POST','PUT'])
 def clap():
-  form = ClapForm()
-  if form.validate_on_submit():
-    page = form.page.data
-    ip = get_remote_addr(request)
-    # for the first time a user claps, a POST request is sent
-    if request.method == 'POST':
+  # for the first time a user claps, a POST request is sent
+  if request.method == 'POST':
+    form = CreateClapForm()
+    if form.validate_on_submit():
+      form_path = form.path.data
+      form_key = form.key.data
+      ip = get_remote_addr(request)
+      # create a new clap record
+      # look up the page using the key and the page path
+      # need to revisit the database design because this query is v expensive
+      page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
+      # the page should exist since it is created when the page is viewed, but check anyway
+      if page is not None:
+        new_clap = Clap(pid=pid, ip=ip)
+        db.session.add(new_clap)
+        db.session.commit()
+        return ('', 200)
+  # subsequent claps (updates to the number of claps) are sent with a PUT request
+  elif request.method == 'PUT':
+    form = UpdateClapForm()
+    if form.validate_on_submit():
+      form_path = form.path.data()
+      num_claps = form.num_claps.data
+      form_key = form.key.data
+      ip = get_remote_addr(request)
+      # update a clap record with the number of claps
+      # look up the clap using the key, ip, and page path
+      # need to revisit the database design because this query is v expensive
+      clap = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first().claps.filter_by(ip=ip).first()
+      if clap is not None:
+        clap.num_claps = num_claps
+        db.session.commit()
+        return ('', 200)
+  return ('', 400)
 
-    # subsequent claps (updates to the number of claps) are sent with a PUT request
-    elif request.method == 'PUT':
-
-# creates a pageview record
-@bp.route('/view', methods=['POST'])
-def leave():
-
-
-# updates a pageview record with the time the user was on the page
-@bp.route('/leave', methods=['PUT'])
-def leave():
+# creates a pageview record, or updates it when a user leaves a page
+@bp.route('/view', methods=['POST', 'PUT'])
+def view():
+  # a PUT request creates a page view record
+  if request.method == 'POST':
+    form = PageViewForm()
+    if form.validate_on_submit():
+      form_path = form.path.data
+      form_referrer = form.referrer.data
+      form_key = form.key.data
+      ip = get_remote_addr(request)
+      # look up the page using the path and key
+      page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
+      # if the page does not exist, create it
+      if page is None:
+        # look up the did with the key
+        did = Key.query.filter_by(uuid=form_key).first().domain.did
+        new_page = Page(did=did, path=form_path)
+        db.session.add(new_page)
+        db.session.commit()
+        page = new_page
+      # create the page view record
+      new_page_view = PageView(pid=page.pid, ip=ip)
+      db.session.add(new_page_view)
+      db.session.commit()
+      return ('', 200)
+  # a PUT request updates a page view record with the page view duration
+  elif request.method == 'PUT':
+    form = LeavePageForm()
+    if form.validate_on_submit():
+      form_path = form.path.data
+      form_pvid = form.pvid.data
+      form_key = form.key.data
+      # look up the page view by pvid
+      page_view = PageView.query.filter_by(pvid=form_pvid).first()
+      if page_view is not None:
+        # update the page view with the interval
+        start_time = page_view.start_time
+        end_time = datetime.datetime.utc_now()
+        interval = end_time - start_time
+        page_view.time_on_page = interval
+        db.session.commit()
+        return ('', 200)
+  return ('', 400)

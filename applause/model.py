@@ -1,5 +1,7 @@
 from applause import db
 
+import datetime
+
 class User(db.Model):
   __tablename__ = 'users'
 
@@ -53,7 +55,6 @@ class Page(db.Model):
   pid = db.Column(db.Integer, primary_key=True)
   did = db.Column(db.Integer, db.ForeignKey('domains.did'), nullable=False)
   path = db.Column(db.String(), nullable=False)
-  total_claps = db.Column(db.Integer, default=0, nullable=False)
 
   claps = db.relationship('Clap', backref='page', lazy=True)
 
@@ -66,7 +67,7 @@ class Clap(db.Model):
   
   pid = db.Column(db.Integer, db.ForeignKey('pages.pid'), primary_key=True)
   ip = db.Column(db.String(), primary_key=True)
-  num_claps = db.Column(db.Integer, default=0, nullable=False)
+  num_claps = db.Column(db.Integer, default=1, nullable=False)
 
   def __repr__(self):
     return '<pid {} ip {}>'.format(self.pid, self.ip)
