@@ -28,7 +28,7 @@ class Domain(db.Model):
   email = db.Column(db.String(), db.ForeignKey('users.email'), nullable=False)
   validated = db.Column(db.Boolean, default=False, nullable=False)
 
-  pages = db.relationship('Page', backref='domain', lazy=True)
+  pages = db.relationship('Page', backref='domain', lazy='dynamic')
   keys = db.relationship('Key', backref='domain', lazy=True)
 
   def __repr__(self):

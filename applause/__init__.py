@@ -17,6 +17,7 @@ def create_app(test_config=None):
 
   # Create and configure the app
   app = Flask(__name__, instance_relative_config=True)
+
   app.config.from_mapping(
     SQLALCHEMY_TRACK_MODIFICATIONS=False
   )
@@ -44,6 +45,7 @@ def create_app(test_config=None):
   migrate.init_app(app, db)
 
   with app.app_context():
+
     from . import auth
     app.register_blueprint(auth.bp)
 

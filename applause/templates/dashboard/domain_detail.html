@@ -20,7 +20,9 @@ Domain Detail
     {% for key in keys %}
       <li id="{{ key.uuid }}">
         <p>{{ key.uuid }} <button onclick="toggleKeyDetails('{{ key.uuid }}')">more</button></p>
-        <code hidden>Code for this key goes here</code>
+        <code hidden>
+          &lt;script id="applause-tag" src="static.getapplause.io/applause-script.js" data-key="{{ key.uuid }}"&gt;&lt;/script&gt;
+        </code>
         <form hidden method="post" action="/my/delete_key">
           <dl>
             <input type="hidden" name="uuid" value="{{ key.uuid }}">
