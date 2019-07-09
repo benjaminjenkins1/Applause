@@ -29,22 +29,4 @@ class AddKeyForm(FlaskForm):
 class DeleteKeyForm(FlaskForm):
   uuid = StringField('uuid', validators=[DataRequired()])
   did = StringField('did', validators=[DataRequired()])
-
-class CreateClapForm(FlaskForm):
-  path = StringField('page', validators=[DataRequired()])
-  key = StringField('key', validators=[DataRequired()])
-
-class UpdateClapForm(FlaskForm):
-  path = StringField('page', validators=[DataRequired()])
-  num_claps = IntegerField('num_claps', validators=[DataRequired()])
-  key = StringField('key', validators=[DataRequired()])
-
-class PageViewForm(FlaskForm):
-  path = StringField('path', validators=[DataRequired()])
-  referrer = StringField('referrer')
-  key = StringField('key', validators=[DataRequired()])
-
-class LeavePageForm(FlaskForm):
-  path = StringField('page', validators=[DataRequired()])
-  pvid = IntegerField('pvid', validators=[DataRequired()])
-  key = StringField('key', validators=[DataRequired()])
+  

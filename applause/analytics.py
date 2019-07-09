@@ -12,11 +12,6 @@ from applause.model import (
   Key
 )
 
-from applause.forms import (
-  CreateClapForm,
-  UpdateClapForm
-)
-
 import datetime
 
 bp = Blueprint('analytics', __name__, url_prefix='/analytics')
@@ -32,39 +27,38 @@ def get_remote_addr(request):
 def clap():
   # for the first time a user claps, a POST request is sent
   if request.method == 'POST':
-    form = CreateClapForm()
-    if form.validate_on_submit():
-      form_path = form.path.data
-      form_key = form.key.data
-      ip = get_remote_addr(request)
-      # create a new clap record
-      # look up the page using the key and the page path
-      # need to revisit the database design because this query is v expensive
-      page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
-      # the page should exist since it is created when the page is viewed, but check anyway
-      if page is not None:
-        new_clap = Clap(pid=pid, ip=ip)
-        db.session.add(new_clap)
-        db.session.commit()
-        return ('', 200)
+    form_path = request.form['path']
+    form_key = request.form['key']
+    ip = get_remote_addr(request)
+    # create a new clap record
+    # look up the page using the key and the page path
+    # need to revisit the database design because this query is v expensive
+    page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
+    # the page should exist since it is created when the page is viewed, but check anyway
+    if page is not None:
+      new_clap = Clap(pid=page.pid, ip=ip)
+      db.session.add(new_clap)
+      db.session.commit()
+      return ('', 200)
   # subsequent claps (updates to the number of claps) are sent with a PUT request
   elif request.method == 'PUT':
-    form = UpdateClapForm()
-    if form.validate_on_submit():
-      form_path = form.path.data()
-      num_claps = form.num_claps.data
-      form_key = form.key.data
-      ip = get_remote_addr(request)
-      # update a clap record with the number of claps
-      # look up the clap using the key, ip, and page path
-      # need to revisit the database design because this query is v expensive
-      clap = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first().claps.filter_by(ip=ip).first()
-      if clap is not None:
-        clap.num_claps = num_claps
-        db.session.commit()
-        return ('', 200)
+    form_path = request.form['path']
+    num_claps = int(request.form['num_claps'])
+    if num_claps > 50 or num_claps < 1:
+      return ('', 400)
+    form_key = request.form['key']
+    ip = get_remote_addr(request)
+    # update a clap record with the number of claps
+    # look up the clap using the key, ip, and page path
+    # need to revisit the database design because this query is v expensive
+    clap = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first().claps.filter_by(ip=ip).first()
+    if clap is not None:
+      clap.num_claps = num_claps
+      db.session.commit()
+      return ('', 200)
   return ('', 400)
 
+# TODO: Domain validation
 # creates a pageview record, or updates it when a user leaves a page
 @bp.route('/view', methods=['POST', 'PUT'])
 def view():

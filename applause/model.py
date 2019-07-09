@@ -56,7 +56,7 @@ class Page(db.Model):
   did = db.Column(db.Integer, db.ForeignKey('domains.did'), nullable=False)
   path = db.Column(db.String(), nullable=False)
 
-  claps = db.relationship('Clap', backref='page', lazy=True)
+  claps = db.relationship('Clap', backref='page', lazy='dynamic')
 
   def __repr__(self):
     return '<pid {}>'.format(self.pid)
