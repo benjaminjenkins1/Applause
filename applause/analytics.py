@@ -62,7 +62,7 @@ def clap():
 # creates a pageview record, or updates it when a user leaves a page
 @bp.route('/view', methods=['POST', 'PUT'])
 def view():
-  # a PUT request creates a page view record
+  # a POST request creates a page view record
   if request.method == 'POST':
     form_path = request.form['path']
     form_referrer = request.form['referrer']

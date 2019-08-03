@@ -1,0 +1,5 @@
+include LICENSE
+graft applause/static
+graft applause/templates
+graft tests
+global-exclude *.pyc

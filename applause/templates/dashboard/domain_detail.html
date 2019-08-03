@@ -21,7 +21,7 @@ Domain Detail
       <li id="{{ key.uuid }}">
         <p>{{ key.uuid }} <button onclick="toggleKeyDetails('{{ key.uuid }}')">more</button></p>
         <code hidden>
-          &lt;script id="applause-tag" src="static.getapplause.io/applause-script.js" data-key="{{ key.uuid }}"&gt;&lt;/script&gt;
+          &lt;script id="applause-tag" src="https://static.applauseapp.io/applause_script.js" data-key="{{ key.uuid }}"&gt;&lt;/script&gt;
         </code>
         <form hidden method="post" action="/my/delete_key">
           <dl>
@@ -45,5 +45,5 @@ Domain Detail
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/domain_detail.js"></script>
+<script src="https://static.applauseapp.io/domain_detail.js"></script>
 {% endblock %}
