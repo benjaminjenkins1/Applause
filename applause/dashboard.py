@@ -40,7 +40,6 @@ def add_domain():
   form = AddDomainForm()
   if form.is_submitted() and form.validate_on_submit():
     domain_name = form.domain_name.data
-    print(domain_name)
     exists = Domain.query.filter_by(email=g.user.email, domain_name=domain_name).first() is not None
     if not exists:
       new_domain = Domain(domain_name=domain_name, email=g.user.email)
@@ -61,7 +60,6 @@ def domain_detail():
   if domain is None:
     return redirect(url_for('dashboard.dashboard'))
   keys = domain.keys
-  print(keys)
   add_key_form = AddKeyForm()
   delete_key_form = DeleteKeyForm()
   return render_template('dashboard/domain_detail.html', domain=domain, keys=keys, add_key_form=add_key_form, delete_key_form=delete_key_form)
@@ -78,7 +76,6 @@ def add_key():
     key_uuid = uuid.uuid4()
     # add the key to the db
     new_key = Key(uuid=key_uuid, did=did, email=g.user.email)
-    print(new_key.uuid, new_key.did, new_key.email)
     db.session.add(new_key)
     db.session.commit()
     return redirect(url_for('dashboard.domain_detail', did=did))
@@ -92,7 +89,6 @@ def delete_key():
   if form.is_submitted() and form.validate_on_submit():
     uuid = form.uuid.data
     did = form.did.data
-    print(uuid)
     # remove the key with this uuid and email of the user from the database
     Key.query.filter(Key.uuid==uuid, Key.email==g.user.email).delete()
     db.session.commit()

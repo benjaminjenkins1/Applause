@@ -9,11 +9,6 @@ Domain Detail
 {% endblock %}
 
 {% block content %}
-  {% if domain.validated %}
-    <p class="domain-validated">Validated</p>
-  {% else %}
-    <p class="domain-not-validated">Not yet validated</p>
-  {% endif %}
   {% if keys != None %}
   <h2>Keys for this domain</h2>
   <ul>
@@ -21,7 +16,7 @@ Domain Detail
       <li id="{{ key.uuid }}">
         <p>{{ key.uuid }} <button onclick="toggleKeyDetails('{{ key.uuid }}')">more</button></p>
         <code hidden>
-          &lt;script id="applause-tag" src="https://static.applauseapp.io/applause_script.js" data-key="{{ key.uuid }}"&gt;&lt;/script&gt;
+          &lt;script id="applause-script" src="https://static.applauseapp.io/js/applause_script.js" data-key="{{ key.uuid }}"&gt;&lt;/script&gt;
         </code>
         <form hidden method="post" action="/my/delete_key">
           <dl>
@@ -45,5 +40,5 @@ Domain Detail
 {% endblock %}
 
 {% block scripts %}
-<script src="https://static.applauseapp.io/domain_detail.js"></script>
+<script src="https://static.applauseapp.io/js/domain_detail.js"></script>
 {% endblock %}

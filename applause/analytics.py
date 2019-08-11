@@ -12,6 +12,8 @@ from applause.model import (
   Key
 )
 
+from flask_cors import cross_origin
+
 import datetime
 
 bp = Blueprint('analytics', __name__, url_prefix='/analytics')
@@ -23,7 +25,8 @@ def get_remote_addr(request):
   else:
     return request.environ['HTTP_X_FORWARDED_FOR']
 
-@bp.route('/clap', methods=['POST','PUT'])
+@bp.route('/clap', methods=['POST','PUT','GET'])
+@cross_origin()
 def clap():
   # for the first time a user claps, a POST request is sent
   if request.method == 'POST':
@@ -56,46 +59,33 @@ def clap():
       clap.num_claps = num_claps
       db.session.commit()
       return ('', 200)
+    # For getting the number of claps when the page loads
+    elif request.method == 'GET':
+      return(5, 200);
   return ('', 400)
 
 # TODO: Domain validation
 # creates a pageview record, or updates it when a user leaves a page
-@bp.route('/view', methods=['POST', 'PUT'])
+@bp.route('/view', methods=['POST'])
+@cross_origin()
 def view():
-  # a POST request creates a page view record
-  if request.method == 'POST':
-    form_path = request.form['path']
-    form_referrer = request.form['referrer']
-    form_key = request.form['key']
-    ip = get_remote_addr(request)
-    # look up the page using the path and key
-    page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
-    # if the page does not exist, create it
-    if page is None:
-      # look up the did with the key
-      did = Key.query.filter_by(uuid=form_key).first().domain.did
-      new_page = Page(did=did, path=form_path)
-      db.session.add(new_page)
-      db.session.commit()
-      page = new_page
-    # create the page view record
-    new_page_view = PageView(pid=page.pid, ip=ip, referrer=form_referrer)
-    db.session.add(new_page_view)
+  # Create a page view record
+  form_path = request.form['path']
+  form_referrer = request.form['referrer']
+  form_key = request.form['key']
+  ip = get_remote_addr(request)
+  # look up the page using the path and key
+  page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
+  # if the page does not exist, create it
+  if page is None:
+    # look up the did with the key
+    did = Key.query.filter_by(uuid=form_key).first().domain.did
+    new_page = Page(did=did, path=form_path)
+    db.session.add(new_page)
     db.session.commit()
-    return (str(new_page_view.pvid), 200)
-  # a PUT request updates a page view record with the page view duration
-  elif request.method == 'PUT':
-    form_path = request.form['path']
-    form_pvid = request.form['pvid']
-    form_key = request.form['key']
-    # look up the page view by pvid
-    page_view = PageView.query.filter_by(pvid=form_pvid).first()
-    if page_view is not None:
-      # update the page view with the interval
-      start_time = page_view.start_time
-      end_time = datetime.datetime.utcnow()
-      interval = end_time - start_time
-      page_view.time_on_page = interval
-      db.session.commit()
-      return ('', 200)
-  return ('', 400)
+    page = new_page
+  # create the page view record
+  new_page_view = PageView(pid=page.pid, ip=ip, referrer=form_referrer)
+  db.session.add(new_page_view)
+  db.session.commit()
+  return (str(new_page_view.pvid), 200)

@@ -26,7 +26,6 @@ class Domain(db.Model):
   did = db.Column(db.Integer, primary_key=True)
   domain_name = db.Column(db.String(), nullable=False)
   email = db.Column(db.String(), db.ForeignKey('users.email'), nullable=False)
-  validated = db.Column(db.Boolean, default=False, nullable=False)
 
   pages = db.relationship('Page', backref='domain', lazy='dynamic')
   keys = db.relationship('Key', backref='domain', lazy=True)
@@ -79,5 +78,4 @@ class PageView(db.Model):
   pid = db.Column(db.Integer, db.ForeignKey('pages.pid'), nullable=False)
   ip = db.Column(db.String(), nullable=False)
   referrer = db.Column(db.String(), nullable=True)
-  start_time = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-  time_on_page = db.Column(db.Interval, nullable=True)
+  time = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)

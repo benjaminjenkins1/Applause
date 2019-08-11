@@ -55,13 +55,8 @@ def register():
     pass_hash = generate_password_hash(form.password.data)
     user = User(email=email, pass_hash=pass_hash)
     exists = User.query.filter_by(email=email).first() is not None
-    if exists:
-      print("user exists")
-    else:
-      print("user does not exist")
     if not exists:
       db.session.add(user)
-      print(user)
       db.session.commit()
       session.clear()
       session['email'] = email
@@ -69,7 +64,6 @@ def register():
     else:
       msg = Markup('There\'s already an account with that email address<br><a href="/auth/login">Log in</a><br><a href="/auth/reset_password">Reset password</a>')
       flash(msg)
-  print(form.errors)
   return render_template('auth/register.html', form=form)
 
 
@@ -78,7 +72,6 @@ def login():
   form = LoginForm(request.form)
   if request.method == 'POST' and form.validate():
     email = form.email.data
-    print(email)
     password = form.password.data
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.pass_hash, password):

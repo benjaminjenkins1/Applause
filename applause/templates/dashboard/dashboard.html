@@ -13,7 +13,7 @@ Dashboard
     <h2>My Domains</h2>
     <ul>
     {% for domain in domains %}
-      <li><a href="{{ url_for('dashboard.domain_detail', did=domain.did) }}">{{ domain.domain_name }}</a> [{% if domain.validated %}validated{% else %}not validated{% endif %}]</li>
+      <li><a href="{{ url_for('dashboard.domain_detail', did=domain.did) }}">{{ domain.domain_name }}</a></li>
     {% endfor %}
     </ul>
     <a href="{{ url_for('dashboard.add_domain') }}">+</a>
@@ -21,6 +21,6 @@ Dashboard
 {% endblock %}
 
 {% block scripts %}
-<script id="applause-tag" src="https://static.applauseapp.io/applause_script.js" data-key="1bd8809e-e1e8-4a9d-b51f-30569b08e5b3"></script>
+<script id="applause-script" src="https://static.applauseapp.io/js/applause_script.js" data-key="1bd8809e-e1e8-4a9d-b51f-30569b08e5b3"></script>
 {% endblock %}
 

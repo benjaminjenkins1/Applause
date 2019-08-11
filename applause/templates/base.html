@@ -7,11 +7,17 @@
   <meta name="author" content="Benjamin Jenkins">
   <meta name="description" content="Applause, audience approval tracking and basic analytics suite">
   <meta name="keywords" content="audience,clap,applause,tracking,analytics,suite">
-  <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
-  <!--
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" type="text/css">
-  -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://static.applauseapp.io/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://static.applauseapp.io/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://static.applauseapp.io/favicons/favicon-16x16.png">
+  <link rel="manifest" href="https://static.applauseapp.io/favicons/site.webmanifest">
+  <link rel="mask-icon" href="https://static.applauseapp.io/favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="https://static.applauseapp.io/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="https://static.applauseapp.io/favicons/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" integrity="sha256-vK3UTo/8wHbaUn+dTQD0X6dzidqc5l7gczvH+Bnowwk=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://static.applauseapp.io/css/style.css" type="text/css">
 </head>
 <body>
   {% block nav %}
@@ -37,6 +43,7 @@
     {% endfor %}
     {% block content %}{% endblock %}
   </section>
+  {% include 'footer.html' %}
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
   {% block scripts %}{% endblock %}
 </body>

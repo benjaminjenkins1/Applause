@@ -38,23 +38,19 @@ This app uses the connecting client's IP address to track information about clap
 
 ```
 server {
-  listen      80;
-  server_name www.calvin.me;
-  return 301  https://myapplauseserver.com;
+  listen 80;
+  server_name myapplauseserver.com;
+  return 301  https://$server_name$request_uri? permanent;
 }
 
 server {
-  listen 443 ssl default_server;
+  listen 443 ssl;
   server_name myapplauseserver.com;
   ssl_certificate /etc/nginx/ssl/myapplauseserver.com.crt;
   ssl_certificate_key /etc/nginx/ssl/myapplauseserver.com.key;
 
   location / {
-    proxy_set_header  Host $host;
-    proxy_set_header  X-Real-IP $remote_addr;
-    proxy_set_header  X-Forwarded-Proto https;
     proxy_set_header  X-Forwarded-For $remote_addr;
-    proxy_set_header  X-Forwarded-Host $remote_addr;
     proxy_pass        http://127.0.0.1:1234;
   }
 }
