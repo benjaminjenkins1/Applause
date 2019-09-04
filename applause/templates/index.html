@@ -10,12 +10,23 @@
 
 {% block content %}
 
-<div class="landing-page-content">
-  <h1>Applause</h1>
-  <h2>A clap-based approval tracking and analytics platform</h2>
-  <p><a href="/auth/register">Get started now</a></p>
-  <p>or</p>
-  <p><a href="/auth/login">Go to your Dashboard</a></p>
+<div class="columns is-centered">
+  <div class="column has-text-centered index-content">
+    <h1>Applause</h1>
+    <div class="button-container is-inline-block">
+        <script id="applause-script" src="https://static.applauseapp.io/js/applause_script.js" data-key="303829ab-f0fd-43f9-af86-54025deb11e6"></script>
+    </div>
+    <p class="index-subtitle">A clap-based approval tracking and analytics tool.</p>
+    <div class="action-container">
+      <div class="card">
+        <div class="card-content">
+          <p><a class="button is-info" href="/auth/register">Get started now</a></p>
+          <p>or</p>
+          <p><a class="button is-info"href="/auth/login">Go to your Dashboard</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-{% endblock %}
+{% endblock %}d

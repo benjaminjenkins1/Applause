@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+/**
+ * Get the number of claps from the server
+ */
+
 
 /**
  * Helper function for inserting an element after another
@@ -53,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let button = document.createElement('div');
   let anim = document.createElement('div');
   let counter = document.createElement('div');
+  let total = document.createElement('div');
   let stylesheet = document.createElement('link');
 
   const script = document.getElementById('applause-script');

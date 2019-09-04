@@ -12,6 +12,8 @@ from applause.model import (
   Key
 )
 
+from sqlalchemy.sql import func
+
 from flask_cors import cross_origin
 
 import datetime
@@ -61,7 +63,12 @@ def clap():
       return ('', 200)
     # For getting the number of claps when the page loads
     elif request.method == 'GET':
-      return(5, 200);
+      form_path = request.form['path']
+      form_key = request.form['key']
+      # query the database for the total number of claps
+      # this is probably very slow and should be improved
+      all_claps = Key.query.filter_by(uuid=form_key).first.domain.pages.filter_by(path=form_path).first().claps
+      return(str(all_claps), 200)
   return ('', 400)
 
 # TODO: Domain validation
