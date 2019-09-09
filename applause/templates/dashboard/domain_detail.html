@@ -10,23 +10,27 @@ Domain Detail
 
 {% block content %}
   {% if keys != None %}
-  <h2>Keys for this domain</h2>
+  <h2 class="title is-4">Keys</h2>
   <ul>
     {% for key in keys %}
-      <li id="{{ key.uuid }}">
-        <p>{{ key.uuid }} <button onclick="toggleKeyDetails('{{ key.uuid }}')">more</button></p>
-        <code hidden>
-          &lt;script id="applause-script" src="https://static.applauseapp.io/js/applause_script.js" data-key="{{ key.uuid }}"&gt;&lt;/script&gt;
-        </code>
-        <form hidden method="post" action="/my/delete_key">
-          <dl>
-            <input type="hidden" name="uuid" value="{{ key.uuid }}">
-            <input type="hidden" name="did" value="{{ domain.did }}">
-            {{ delete_key_form.hidden_tag() }}
-          </dl>
-          <p><input type="submit" value="Delete">
-        </form>
-      </li>
+      <div class="card is-inline-block mb-1">
+        <div class="card-content">
+          <li id="{{ key.uuid }}">
+            <p class="domain-key">{{ key.uuid }} <button class="button is-link ml-1" onclick="toggleKeyDetails('{{ key.uuid }}')">more</button></p>
+            <pre hidden class="mb-1 mt-1"><code>&lt;script id="applause-script"
+            src="https://static.applauseapp.io/js/applause_script.js" 
+            data-key="{{ key.uuid }}"&gt;&lt;/script&gt;</code></pre>
+            <form hidden method="post" action="/my/delete_key">
+              <dl>
+                <input type="hidden" name="uuid" value="{{ key.uuid }}">
+                <input type="hidden" name="did" value="{{ domain.did }}">
+                {{ delete_key_form.hidden_tag() }}
+              </dl>
+              <p class="has-text-right"><input class="button is-danger" type="submit" value="Delete Key">
+            </form>
+          </li>
+        </div>
+      </div>
     {% endfor %}
   </ul>
   {% endif %}
@@ -35,7 +39,7 @@ Domain Detail
       <input type="hidden" name="did" value="{{ domain.did }}">
       {{ add_key_form.hidden_tag() }}
     </dl>
-    <input type="submit" value="New Key">
+    <input class="button is-link" type="submit" value="New Key">
   </form>
 {% endblock %}
 

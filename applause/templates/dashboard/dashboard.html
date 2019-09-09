@@ -10,17 +10,12 @@ Dashboard
 
 {% block content %}
   <section id="domains">
-    <h2>My Domains</h2>
-    <ul>
+    <div class="list is-hoverable">
     {% for domain in domains %}
-      <li><a href="{{ url_for('dashboard.domain_detail', did=domain.did) }}">{{ domain.domain_name }}</a></li>
+      <a class="list-item" href="{{ url_for('dashboard.domain_detail', did=domain.did) }}">{{ domain.domain_name }}</a>
     {% endfor %}
-    </ul>
-    <a href="{{ url_for('dashboard.add_domain') }}">+</a>
+    </div>
+    <a class="button is-link" href="{{ url_for('dashboard.add_domain') }}">Add a Domain</a>
   </section>
-{% endblock %}
-
-{% block scripts %}
-<script id="applause-script" src="https://static.applauseapp.io/js/applause_script.js" data-key="1bd8809e-e1e8-4a9d-b51f-30569b08e5b3"></script>
 {% endblock %}
 

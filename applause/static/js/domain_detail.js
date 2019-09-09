@@ -2,16 +2,16 @@
 
 var toggleKeyDetails = function(uuid) {
   let key_li = document.getElementById(uuid);
-  let code = key_li.querySelector("code");
+  let pre = key_li.querySelector("pre");
   let form = key_li.querySelector("form");
   let button = key_li.querySelector("button");
-  if(code.hasAttribute("hidden")){
-    code.removeAttribute("hidden");
+  if(pre.hasAttribute("hidden")){
+    pre.removeAttribute("hidden");
     form.removeAttribute("hidden");
     button.innerText = "less";
   }
   else {
-    code.setAttribute("hidden", true);
+    pre.setAttribute("hidden", true);
     form.setAttribute("hidden", true);
     button.innerText = "more";
   }

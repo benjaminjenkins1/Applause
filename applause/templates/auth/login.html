@@ -2,18 +2,21 @@
 
 {% block title %}Log In{% endblock %}
 
-{% block header %}
-  Log In
-{% endblock %}
-
 {% block content %}
   {% from "_formhelpers.html" import render_field %}
-  <form method="post">
-    <dl>
-      {{ render_field(form.email) }}
-      {{ render_field(form.password) }}
-      {{ form.hidden_tag() }}
-    </dl>
-    <p><input type="submit" value="Log in">
-  </form>
+  <div class="card auth-card">
+    <div class="card-content">
+        <p class="title">
+          Log In
+        </p>
+        <form method="post">
+          <dl>
+            {{ render_field(form.email, class='input') }}
+            {{ render_field(form.password, class='input') }}
+            {{ form.hidden_tag() }}
+          </dl>
+          <p><input class="button is-link" type="submit" value="Log in">
+        </form>
+    </div>
+  </div>
 {% endblock %}

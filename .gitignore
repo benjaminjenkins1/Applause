@@ -9,4 +9,4 @@ dist/
 build/
 migrations/
 *.egg-info/
-.sass-cache/
+applause/.sass-cache/

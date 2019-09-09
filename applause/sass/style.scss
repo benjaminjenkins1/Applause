@@ -5,9 +5,7 @@ $light-gray: #FAFAFA;
 
 html,
 body {
- height: 100%;
- position: relative;
- background-color: $light-gray;
+ background-color: $light-green;
 }
 
 body {
@@ -16,13 +14,12 @@ body {
 
 header {
   font-size: 150%;
+  margin-bottom: 2rem;
 }
 
 footer {
   padding: 2rem 0 1rem 0;
   height: 100px;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   background-color: $light-gray;
   img {
@@ -34,18 +31,25 @@ footer {
   a {
     color: black;
   }
- }
+}
 
-.main-container {
+nav {
+  background-color: $light-gray;
+  h1 {
+    font-size: 150%;
+    font-weight: 700;
+    a {
+      color: black;
+    }
+  }
+}
+
+.main-section {
   min-height: calc(100vh - 100px);
-  overflow: hidden;
-  display: block;
-  position: relative;
-  background-color: $light-green;
 }
 
 .index-content {
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 
 .index-subtitle {
@@ -54,14 +58,45 @@ footer {
 }
 
 .action-container {
-  max-width: 80%;
+  max-width: 100%;
   width: 16rem;
   margin: 0 auto;
   display: inline-block;
   position: relative;
   top: 2rem;
+  .button {
+    margin: 1rem auto 1rem auto;
+  }
 }
 
 .button-container {
   margin: 1.5rem auto 2rem;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.ml-1 {
+  margin-left: 1rem;
+}
+
+.auth-card {
+  max-width: 90%;
+  width: 24rem;
+  margin: 4rem auto;
+}
+
+.domain-key {
+  line-height: 200%;
+}
+
+form {
+  dd {
+    margin: 0 0 1rem 0 !important;
+  }
 }
