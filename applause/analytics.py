@@ -66,9 +66,8 @@ def clap():
   # For getting the number of claps when the page loads
   # Returns the total number of claps and the claps by this specific user
   elif request.method == 'GET':
-      form_path = request.form['path']
-      print(form_path)
-      form_key = request.form['key']
+      form_path = request.args.get('path')
+      form_key = request.args.get('key')
       user_ip = get_remote_addr(request)
       # query the database for the total number of claps, then filter for this user's claps
       # this is probably very slow and should be improved

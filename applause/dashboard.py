@@ -15,7 +15,10 @@ from applause.auth import login_required
 
 from applause.model import (
   Domain,
-  Key
+  Key,
+  Page,
+  PageView,
+  Clap
 )
 
 from applause.forms import (
@@ -24,7 +27,41 @@ from applause.forms import (
   DeleteKeyForm
 )
 
+from sqlalchemy import func
+
 import uuid
+
+def get_domain_summary(domain):
+  total_views = len(db.session.query(PageView, Page).filter(Page.did == domain.did, PageView.pid == Page.pid).all())
+  all_claps = db.session.query(Clap, Page).filter(Page.did == domain.did, Clap.pid == Page.pid).all()
+  total_claps = 0
+  for clap in all_claps:
+    total_claps += clap[0].num_claps
+  return {
+    'views': total_views,
+    'claps': total_claps
+  }
+
+def get_pages_data(domain):
+  page_data = []
+  all_pages = domain.pages.all()
+  for page in all_pages:
+    this_page = { 'path': page.path, 
+                  'views': 0,
+                  'claps': 0 }
+    # add views for this page
+    this_page['views'] = len(PageView.query.filter_by(pid=page.pid).all())
+    # add claps for this page
+    all_page_claps = db.session.query(Clap, Page).filter(Page.did == domain.did, Clap.pid == page.pid).all()
+    for clap in all_page_claps:
+      this_page['claps'] += clap[0].num_claps
+    page_data.append(this_page)
+  return page_data
+
+def get_referrers_data(domain):
+  referrers_data = {}
+  
+  return referrers_data
 
 bp = Blueprint('dashboard', __name__, url_prefix='/my')
 
@@ -60,9 +97,11 @@ def domain_detail():
   if domain is None:
     return redirect(url_for('dashboard.dashboard'))
   keys = domain.keys
-  summary = {}
-  pages = {}
-  referrers = {}
+  #skipping time for now
+  #time = request.args.get('time')
+  summary = get_domain_summary(domain)
+  pages = get_pages_data(domain)
+  referrers = get_referrers_data(domain)
   add_key_form = AddKeyForm()
   delete_key_form = DeleteKeyForm()
   return render_template('dashboard/domain_detail.html', 
@@ -72,7 +111,8 @@ def domain_detail():
                          delete_key_form=delete_key_form,
                          summary=summary,
                          pages=pages,
-                         time = request.args.get('time'))
+                         #time = time
+                         )
 
 @bp.route('/add_key', methods=['POST'])
 @login_required

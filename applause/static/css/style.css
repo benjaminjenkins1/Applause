@@ -34,7 +34,8 @@ nav h1 {
   background-color: #5ED2B3; }
 
 .index-main-section {
-  min-height: calc(100vh - 100px); }
+  min-height: calc(100vh - 100px);
+  background-color: #5ED2B3; }
 
 .index-content {
   margin-top: 10vh; }

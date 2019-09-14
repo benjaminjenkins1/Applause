@@ -9,6 +9,7 @@ Domain Detail
 {% endblock %}
 
 {% block content %}
+  <!-- shelving this for now due to bad database design
   <form method="GET" action="/my/domain_detail" class="mb-1" id="time-form">
     <input type="hidden" name="did" value="{{ domain.did }}">
     <label class="is-inline-block" class="label">Show data from</label>
@@ -22,6 +23,7 @@ Domain Detail
       </div>
     </div>
   </form>
+  !-->
   {% include 'dashboard/domain_summary.html' %}
   {% include 'dashboard/domain_pages.html' %}
   {% include 'dashboard/domain_referrers.html' %}

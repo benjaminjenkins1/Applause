@@ -50,10 +50,7 @@ function getClaps() {
   let XHR = new XMLHttpRequest();
   let FD  = new FormData();
 
-  FD.append('path', path);
-  FD.append('key', key);
-
-  XHR.open('GET', 'https://applauseapp.io/analytics/clap');
+  XHR.open('GET', `https://applauseapp.io/analytics/clap?path=${path}&key=${key}`);
 
   XHR.onreadystatechange = function() {
     if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
@@ -85,6 +82,10 @@ function updateClaps() {
   const key = document.getElementById('applause-script').dataset.key;
   const num_claps = parseInt(c.innerText) - parseInt(c.dataset.initial_claps);
 
+  console.log(path);
+  console.log(key);
+  console.log(num_claps);
+
   let XHR = new XMLHttpRequest();
   let FD  = new FormData();
 
@@ -92,7 +93,14 @@ function updateClaps() {
   FD.append('key', key);
   FD.append('num_claps', num_claps);
 
-  XHR.open('PUT', 'https://applauseapp.io/analytics/clap');
+  // POST request for first clap, PUT for subsequent claps
+  if(num_claps == 1) {
+    XHR.open('POST', 'https://applauseapp.io/analytics/clap');
+  }
+  else if(num_claps > 1) {
+    XHR.open('PUT', 'https://applauseapp.io/analytics/clap');
+  }
+  
 
   XHR.onreadystatechange = function() {
     if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {

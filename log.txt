@@ -1,3 +1,0 @@
- * Serving Flask app "applause" (lazy loading)
- * Environment: development
- * Debug mode: on
