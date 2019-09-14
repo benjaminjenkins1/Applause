@@ -84,4 +84,7 @@ form .errors {
   position: relative;
   top: 5px; }
 
+a.list-item {
+  background-color: white; }
+
 /*# sourceMappingURL=style.css.map */

@@ -10,11 +10,11 @@ Dashboard
 
 {% block content %}
   <section id="domains">
-    <div class="list is-hoverable">
+    <div class="list is-inline-block is-hoverable">
     {% for domain in domains %}
       <a class="list-item" href="{{ url_for('dashboard.domain_detail', did=domain.did) }}">{{ domain.domain_name }}</a>
     {% endfor %}
-    </div>
+    </div><br>
     <a class="button is-link" href="{{ url_for('dashboard.add_domain') }}">Add a Domain</a>
   </section>
 {% endblock %}

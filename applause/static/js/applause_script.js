@@ -82,10 +82,6 @@ function updateClaps() {
   const key = document.getElementById('applause-script').dataset.key;
   const num_claps = parseInt(c.innerText) - parseInt(c.dataset.initial_claps);
 
-  console.log(path);
-  console.log(key);
-  console.log(num_claps);
-
   let XHR = new XMLHttpRequest();
   let FD  = new FormData();
 

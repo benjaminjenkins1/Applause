@@ -59,9 +59,24 @@ def get_pages_data(domain):
   return page_data
 
 def get_referrers_data(domain):
-  referrers_data = {}
-  
+  referrers_data = []
+  # query for the top 5 referrers
+  query = ("SELECT referrer, COUNT(referrer) AS value_occurrence "
+           "FROM pageviews, pages "
+           "WHERE pages.did = {} AND pageviews.pid = pages.pid "
+           "GROUP BY referrer "
+           "ORDER BY value_occurrence DESC "
+           "LIMIT 5").format(domain.did)
+  top_referrers = db.session.execute(query).fetchall()
+  for referrer in top_referrers:
+    referrers_data.append({
+      'name': 'None' if not referrer[0] else referrer[0],
+      'referrals': referrer[1]
+    })
+  print(referrers_data)
   return referrers_data
+
+
 
 bp = Blueprint('dashboard', __name__, url_prefix='/my')
 
@@ -99,9 +114,6 @@ def domain_detail():
   keys = domain.keys
   #skipping time for now
   #time = request.args.get('time')
-  summary = get_domain_summary(domain)
-  pages = get_pages_data(domain)
-  referrers = get_referrers_data(domain)
   add_key_form = AddKeyForm()
   delete_key_form = DeleteKeyForm()
   return render_template('dashboard/domain_detail.html', 
@@ -109,8 +121,9 @@ def domain_detail():
                          keys=keys, 
                          add_key_form=add_key_form, 
                          delete_key_form=delete_key_form,
-                         summary=summary,
-                         pages=pages,
+                         summary = get_domain_summary(domain),
+                         pages = get_pages_data(domain),
+                         referrers = get_referrers_data(domain),
                          #time = time
                          )
 
