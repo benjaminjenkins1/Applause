@@ -60,9 +60,19 @@ def domain_detail():
   if domain is None:
     return redirect(url_for('dashboard.dashboard'))
   keys = domain.keys
+  summary = {}
+  pages = {}
+  referrers = {}
   add_key_form = AddKeyForm()
   delete_key_form = DeleteKeyForm()
-  return render_template('dashboard/domain_detail.html', domain=domain, keys=keys, add_key_form=add_key_form, delete_key_form=delete_key_form)
+  return render_template('dashboard/domain_detail.html', 
+                         domain=domain, 
+                         keys=keys, 
+                         add_key_form=add_key_form, 
+                         delete_key_form=delete_key_form,
+                         summary=summary,
+                         pages=pages,
+                         time = request.args.get('time'))
 
 @bp.route('/add_key', methods=['POST'])
 @login_required

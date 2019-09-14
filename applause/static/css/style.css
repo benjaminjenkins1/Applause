@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Hepta+Slab:400,700&display=swap");
 html,
 body {
-  background-color: #5ED2B3; }
+  background-color: white; }
 
 body {
   font-family: 'Hepta Slab', serif; }
@@ -14,7 +14,7 @@ footer {
   padding: 2rem 0 1rem 0;
   height: 100px;
   width: 100%;
-  background-color: #FAFAFA; }
+  background-color: white; }
   footer img {
     width: 20px;
     height: 20px;
@@ -23,15 +23,17 @@ footer {
   footer a {
     color: black; }
 
-nav {
-  background-color: #FAFAFA; }
-  nav h1 {
-    font-size: 150%;
-    font-weight: 700; }
-    nav h1 a {
-      color: black; }
+nav h1 {
+  font-size: 150%;
+  font-weight: 700; }
+  nav h1 a {
+    color: black; }
 
 .main-section {
+  min-height: calc(100vh - 152px);
+  background-color: #5ED2B3; }
+
+.index-main-section {
   min-height: calc(100vh - 100px); }
 
 .index-content {
@@ -43,7 +45,7 @@ nav {
 
 .action-container {
   max-width: 100%;
-  width: 16rem;
+  width: 18rem;
   margin: 0 auto;
   display: inline-block;
   position: relative;
@@ -73,5 +75,12 @@ nav {
 
 form dd {
   margin: 0 0 1rem 0 !important; }
+form .errors {
+  font-weight: 700;
+  color: #ff3860; }
+
+#time-form label {
+  position: relative;
+  top: 5px; }
 
 /*# sourceMappingURL=style.css.map */

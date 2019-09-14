@@ -9,10 +9,28 @@ Domain Detail
 {% endblock %}
 
 {% block content %}
-  {% if keys != None %}
-  <h2 class="title is-4">Keys</h2>
-  <ul>
-    {% for key in keys %}
+  <form method="GET" action="/my/domain_detail" class="mb-1" id="time-form">
+    <input type="hidden" name="did" value="{{ domain.did }}">
+    <label class="is-inline-block" class="label">Show data from</label>
+    <div class="control is-inline-block">
+      <div class="select is-rounded">
+        <select name="time" form="time-form" onchange="this.form.submit()">
+          <option value="all_time"   {% if time == "all_time" %}  selected{% endif %}>All Time</option>
+          <option value="this_month" {% if time == "this_month" %}selected{% endif %}>This Month</option>
+          <option value="this_week"  {% if time == "this_week" %} selected{% endif %}>This Week</option>
+        </select>
+      </div>
+    </div>
+  </form>
+  {% include 'dashboard/domain_summary.html' %}
+  {% include 'dashboard/domain_pages.html' %}
+  {% include 'dashboard/domain_referrers.html' %}
+  
+  <div class="box">
+    <h2 class="title is-4">Keys</h2>
+    {% if keys != None %}
+    <ul>
+      {% for key in keys %}
       <div class="card is-inline-block mb-1">
         <div class="card-content">
           <li id="{{ key.uuid }}">
@@ -31,16 +49,17 @@ Domain Detail
           </li>
         </div>
       </div>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  <form method="post" action="/my/add_key">
-    <dl>
-      <input type="hidden" name="did" value="{{ domain.did }}">
-      {{ add_key_form.hidden_tag() }}
-    </dl>
-    <input class="button is-link" type="submit" value="New Key">
-  </form>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="post" action="/my/add_key">
+      <dl>
+        <input type="hidden" name="did" value="{{ domain.did }}">
+        {{ add_key_form.hidden_tag() }}
+      </dl>
+      <input class="button is-link" type="submit" value="New Key">
+    </form>
+  </div>
 {% endblock %}
 
 {% block scripts %}

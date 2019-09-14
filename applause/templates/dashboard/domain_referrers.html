@@ -1,0 +1,21 @@
+<div class="box">
+    <p class="title is-4">Top Referrers</p>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Referrer</th>
+            <th>Referrals</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for referrer in referrers %}
+          <tr>
+            <td>{{ referrer.name }}</td>
+            <td>{{ referrer.referrals }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>

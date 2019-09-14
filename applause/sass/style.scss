@@ -2,10 +2,11 @@
 
 $light-green: #5ED2B3;
 $light-gray: #FAFAFA;
+$danger-red: hsl(348, 100%, 61%);
 
 html,
 body {
- background-color: $light-green;
+ background-color: white;
 }
 
 body {
@@ -21,7 +22,7 @@ footer {
   padding: 2rem 0 1rem 0;
   height: 100px;
   width: 100%;
-  background-color: $light-gray;
+  background-color: white;
   img {
     width: 20px;
     height: 20px;
@@ -34,7 +35,6 @@ footer {
 }
 
 nav {
-  background-color: $light-gray;
   h1 {
     font-size: 150%;
     font-weight: 700;
@@ -45,7 +45,12 @@ nav {
 }
 
 .main-section {
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 152px); // page height minus nav and footer
+  background-color: $light-green;
+}
+
+.index-main-section {
+  min-height: calc(100vh - 100px); // page height minus footer
 }
 
 .index-content {
@@ -59,7 +64,7 @@ nav {
 
 .action-container {
   max-width: 100%;
-  width: 16rem;
+  width: 18rem;
   margin: 0 auto;
   display: inline-block;
   position: relative;
@@ -99,4 +104,13 @@ form {
   dd {
     margin: 0 0 1rem 0 !important;
   }
+  .errors {
+    font-weight: 700;
+    color: $danger-red;
+  }
+}
+
+#time-form label {
+  position: relative;
+  top: 5px;
 }

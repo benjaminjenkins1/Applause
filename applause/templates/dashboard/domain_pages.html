@@ -1,0 +1,23 @@
+<div class="box">
+    <p class="title is-4">Pages</p>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th>Path</th>
+            <th>Views</th>
+            <th>Claps</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for page in pages %}
+          <tr>
+            <td>{{ page.path }}</td>
+            <td>{{ page.views }}</td>
+            <td>{{ page.claps }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>

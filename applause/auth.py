@@ -82,6 +82,10 @@ def login():
       return redirect(url_for('dashboard.dashboard'))
   return render_template('auth/login.html', form=form)
 
+@bp.route('/reset_password', methods=['GET','POST'])
+def reset_password():
+  return render_template('auth/reset_password.html')
+
 
 @bp.route('/logout')
 def logout():

@@ -1,6 +1,7 @@
 from flask import (
   Blueprint,
-  request
+  request,
+  jsonify
 )
 
 from applause import db
@@ -37,10 +38,11 @@ def clap():
     ip = get_remote_addr(request)
     # create a new clap record
     # look up the page using the key and the page path
-    # need to revisit the database design because this query is v expensive
+    # need to revisit the database design because this query is probably slow
     page = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first()
     # the page should exist since it is created when the page is viewed, but check anyway
     if page is not None:
+      # Clap is initialized with num_claps=1
       new_clap = Clap(pid=page.pid, ip=ip)
       db.session.add(new_clap)
       db.session.commit()
@@ -61,18 +63,31 @@ def clap():
       clap.num_claps = num_claps
       db.session.commit()
       return ('', 200)
-    # For getting the number of claps when the page loads
-    elif request.method == 'GET':
+  # For getting the number of claps when the page loads
+  # Returns the total number of claps and the claps by this specific user
+  elif request.method == 'GET':
       form_path = request.form['path']
+      print(form_path)
       form_key = request.form['key']
-      # query the database for the total number of claps
+      user_ip = get_remote_addr(request)
+      # query the database for the total number of claps, then filter for this user's claps
       # this is probably very slow and should be improved
-      all_claps = Key.query.filter_by(uuid=form_key).first.domain.pages.filter_by(path=form_path).first().claps
-      return(str(all_claps), 200)
+      all_claps = Key.query.filter_by(uuid=form_key).first().domain.pages.filter_by(path=form_path).first().claps
+      all_claps_list = all_claps.all()
+      # fix this garbage:
+      total_num_claps = 0
+      for clap in all_claps:
+        total_num_claps += clap.num_claps
+      user_claps = all_claps.filter_by(ip=user_ip).first()
+      if user_claps is not None:
+        user_num_claps = user_claps.num_claps
+      else:
+        user_num_claps = 0
+      return(jsonify(total=total_num_claps, user=user_num_claps), 200)
   return ('', 400)
 
-# TODO: Domain validation
-# creates a pageview record, or updates it when a user leaves a page
+
+# creates a pageview record, and a page if it does not yet exist
 @bp.route('/view', methods=['POST'])
 @cross_origin()
 def view():

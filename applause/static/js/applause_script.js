@@ -1,6 +1,6 @@
 
 /**
- * Send the page view POST and get the pvid
+ * Send the page view POST and get the pvid for the page
  */
 document.addEventListener('DOMContentLoaded', function() {
   
@@ -32,15 +32,78 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Get the number of claps from the server
- */
-
-
-/**
  * Helper function for inserting an element after another
  */
 function insertAfter(el, referenceNode) {
   referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
+}
+
+/**
+ * Get the total claps and this user's claps
+ * returns an object
+ */
+function getClaps() {
+
+  const path = window.location.pathname;
+  const key = document.getElementById('applause-script').dataset.key;
+
+  let XHR = new XMLHttpRequest();
+  let FD  = new FormData();
+
+  FD.append('path', path);
+  FD.append('key', key);
+
+  XHR.open('GET', 'https://applauseapp.io/analytics/clap');
+
+  XHR.onreadystatechange = function() {
+    if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+      console.log('Applause: Got claps successfully.');
+      // we need to keep track of the total times the user has clapped and make sure it is no more than 50 times
+      // total claps - user claps = initial claps
+      let c = document.getElementById('applause-counter');
+      claps = JSON.parse(XHR.response);
+      c.setAttribute('data-initial_claps', claps.total - claps.user);
+      c.innerText = claps.total;
+    }
+    else if(this.status != 200) {
+      console.log('Applause: Error getting claps for this page. Status code: ' + this.status);
+    }
+  }
+
+  XHR.send(FD);
+
+}
+
+/**
+ * Update the server with the number of times this user has clapped
+ */
+function updateClaps() {
+
+  let c = document.getElementById('applause-counter');
+  
+  const path = window.location.pathname;
+  const key = document.getElementById('applause-script').dataset.key;
+  const num_claps = parseInt(c.innerText) - parseInt(c.dataset.initial_claps);
+
+  let XHR = new XMLHttpRequest();
+  let FD  = new FormData();
+
+  FD.append('path', path);
+  FD.append('key', key);
+  FD.append('num_claps', num_claps);
+
+  XHR.open('PUT', 'https://applauseapp.io/analytics/clap');
+
+  XHR.onreadystatechange = function() {
+    if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+      console.log('Applause: Updated claps successfully.');
+    }
+    else if(this.status != 200) {
+      console.log('Applause: Error updating claps for this page. Status code: ' + this.status);
+    }
+  }
+
+  XHR.send(FD);
 }
 
 /**
@@ -77,6 +140,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   insertAfter(stylesheet, button);
 
+  // get the total claps and user claps
+  getClaps();
+  
+
   // Add event listener for clap button click
   document.getElementById('applause-button').addEventListener('click', function() {
     
@@ -86,17 +153,12 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('applause-anim').classList.remove('applause-anim-active');
     }, 100);
     let c = document.getElementById('applause-counter');
-    if(c.innerText === '') {
-      c.innerText = '1';
-    }
-    else {
+    // ensure that the number of claps the user has added is no more than 50
+    user_claps = parseInt(c.innerText) - parseInt(c.dataset.initial_claps);
+    if(user_claps <= 50) {
       c.innerText = parseInt(c.innerText) + 1;
+      updateClaps(user_claps + 1);
     }
-
-    let claps = parseInt(c.innerText);
-
-    // Send a request to update the number of claps
-
 
   });
 
